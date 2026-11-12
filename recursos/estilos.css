@@ -1,0 +1,347 @@
+/* =====================================================================
+   Doble raya · hoja de estilos
+   Idea: el cuaderno de doble raya de primaria. Papel azulado, renglones
+   celestes, margen rojo y cada vocal con su propio color.
+   Tipografía única: Andika (hecha para lectores que empiezan: "a" y "g"
+   de un solo piso, letras que no se confunden).
+   ===================================================================== */
+
+:root {
+  --papel: #f6f9fe;
+  --hoja: #ffffff;
+  --renglon: #bcd4f2;
+  --renglon-suave: #dbe7f7;
+  --margen: #d93a3f;
+  --tinta: #1b2747;
+  --tinta-2: #4a5878;
+
+  /* Colores de las vocales (contraste ≥ 3:1 sobre papel para texto grande) */
+  --v-a: #c62f35;
+  --v-e: #a86d00;
+  --v-i: #1f6fc4;
+  --v-o: #17805a;
+  --v-u: #7b3fc4;
+
+  --error: #b42318;
+  --ok: #17805a;
+  --foco: #1f6fc4;
+
+  --fuente: 'Andika', 'Trebuchet MS', system-ui, sans-serif;
+  --paso: 2rem; /* altura de un renglón del cuaderno */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--fuente);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--tinta);
+  background-color: var(--papel);
+  background-image:
+    linear-gradient(to right, transparent 0 calc(var(--margen-x) - 1px), var(--margen) calc(var(--margen-x) - 1px) calc(var(--margen-x) + 1px), transparent calc(var(--margen-x) + 1px)),
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--paso) - 1px), var(--renglon-suave) calc(var(--paso) - 1px) var(--paso));
+  --margen-x: 1.25rem;
+}
+@media (min-width: 720px) { body { --margen-x: 3.5rem; } }
+
+h1, h2, h3, p { margin: 0; }
+a { color: var(--v-i); text-underline-offset: .2em; }
+button, input { font: inherit; color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.solo-lector {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.saltar {
+  position: absolute; left: 1rem; top: -4rem; z-index: 10;
+  background: var(--tinta); color: #fff; padding: .6rem 1rem; border-radius: 8px;
+}
+.saltar:focus { top: 1rem; }
+
+/* ---------- Marco general ---------- */
+.pagina {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1rem 1rem 3rem calc(var(--margen-x) + 1rem);
+}
+@media (min-width: 720px) { .pagina { padding: 1.5rem 2rem 4rem calc(var(--margen-x) + 2rem); } }
+
+.cabecera {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  min-height: 3.5rem; margin-bottom: 1.5rem;
+}
+.marca {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-size: 1.375rem; font-weight: 700; letter-spacing: -.01em; text-decoration: none; color: var(--tinta);
+}
+.marca svg { flex: none; }
+
+/* ---------- Botones ---------- */
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 48px; padding: .65rem 1.25rem;
+  border: 2px solid var(--tinta); border-radius: 12px;
+  background: var(--tinta); color: #fff;
+  font-weight: 700; font-size: 1.0625rem; line-height: 1.2;
+  text-decoration: none; cursor: pointer;
+  transition: background-color .15s ease, transform .1s ease;
+}
+.boton:hover { background: #2b3b63; }
+.boton:active { transform: translateY(1px); }
+.boton[disabled] { opacity: .6; cursor: progress; }
+.boton--claro { background: var(--hoja); color: var(--tinta); }
+.boton--claro:hover { background: #eef4fd; }
+.boton--ancho { width: 100%; }
+.boton--chico { min-height: 44px; padding: .45rem .9rem; font-size: 1rem; }
+
+.enlace-boton {
+  background: none; border: 0; padding: .5rem .25rem; min-height: 44px;
+  color: var(--v-i); font-weight: 700; text-decoration: underline; text-underline-offset: .2em; cursor: pointer;
+}
+
+/* =====================================================================
+   PANTALLA DE ENTRADA
+   ===================================================================== */
+.entrada {
+  display: grid; gap: 2.5rem; align-items: start;
+}
+@media (min-width: 960px) {
+  .entrada { grid-template-columns: minmax(0, 1.35fr) minmax(340px, 420px); gap: 4rem; padding-top: 1rem; }
+}
+
+/* ---------- Constructor de sílabas (lo memorable) ---------- */
+.silabario h1 {
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  line-height: 1.15; font-weight: 700; letter-spacing: -.015em;
+  max-width: 22ch;
+}
+.silabario .bajada { margin-top: .75rem; color: var(--tinta-2); max-width: 46ch; }
+
+.consonantes {
+  display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.75rem 0 1rem; padding: 0; list-style: none;
+}
+.consonantes button {
+  width: 3rem; height: 3rem; border-radius: 10px;
+  border: 2px solid var(--renglon); background: var(--hoja);
+  font-size: 1.5rem; font-weight: 700; line-height: 1; cursor: pointer;
+}
+.consonantes button:hover { border-color: var(--tinta-2); }
+.consonantes button[aria-pressed="true"] { background: var(--tinta); border-color: var(--tinta); color: #fff; }
+
+/* El renglón de doble raya: línea superior, media punteada, base y bajada */
+.silabario { container-type: inline-size; min-width: 0; }
+.renglon {
+  /* cada sílaba ocupa 1/5 del ancho: el tamaño sigue al contenedor, no a la ventana */
+  --alto: min(10rem, 26cqi);
+  position: relative;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0; padding: 0; list-style: none;
+  background:
+    linear-gradient(var(--renglon), var(--renglon)) 0 18% / 100% 2px no-repeat,
+    repeating-linear-gradient(to right, var(--renglon) 0 10px, transparent 10px 18px) 0 46% / 100% 2px no-repeat,
+    linear-gradient(var(--margen), var(--margen)) 0 76% / 100% 2px no-repeat;
+  border-top: 1px solid transparent;
+}
+.renglon li { display: contents; }
+.silaba {
+  height: var(--alto);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 0 0 calc(var(--alto) * .24 - .02em);
+  border: 0; background: none; cursor: pointer;
+  font-size: calc(var(--alto) * .44); line-height: .8; font-weight: 700; letter-spacing: -.02em;
+  border-radius: 12px;
+}
+.silaba:hover { background: rgba(188, 212, 242, .28); }
+.silaba .vocal { transition: color .2s; }
+.silaba[data-v="a"] .vocal { color: var(--v-a); }
+.silaba[data-v="e"] .vocal { color: var(--v-e); }
+.silaba[data-v="i"] .vocal { color: var(--v-i); }
+.silaba[data-v="o"] .vocal { color: var(--v-o); }
+.silaba[data-v="u"] .vocal { color: var(--v-u); }
+.silaba.sonando { animation: brinco .5s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes brinco {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-14%) scale(1.08); }
+  100% { transform: translateY(0); }
+}
+
+.silabario .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; margin-top: 1.25rem; }
+.nota { color: var(--tinta-2); font-size: .9375rem; }
+
+/* ---------- Hoja de acceso ---------- */
+.hoja {
+  position: relative;
+  background: var(--hoja);
+  border: 1.5px solid var(--renglon);
+  border-radius: 6px 6px 6px 6px;
+  padding: 1.5rem 1.25rem 1.75rem;
+  box-shadow: 0 1px 0 var(--renglon), 0 18px 32px -20px rgba(27, 39, 71, .35);
+}
+@media (min-width: 480px) { .hoja { padding: 2rem 2rem 2.25rem; } }
+/* perforaciones de hoja de cuaderno */
+.hoja::before {
+  content: ""; position: absolute; left: .55rem; top: 1.5rem; bottom: 1.5rem; width: 10px;
+  background: radial-gradient(circle, var(--papel) 0 4px, var(--renglon) 4px 5px, transparent 5px) 0 0 / 10px 2.75rem repeat-y;
+}
+@media (max-width: 479px) { .hoja::before { display: none; } }
+
+.hoja h2 { font-size: 1.5rem; line-height: 1.2; font-weight: 700; }
+
+.pestanas {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  margin: 0 0 1.5rem; border-bottom: 2px solid var(--renglon);
+}
+.pestana {
+  min-height: 48px; padding: .5rem .75rem; margin-bottom: -2px;
+  background: none; border: 0; border-bottom: 3px solid transparent;
+  font-weight: 700; color: var(--tinta-2); cursor: pointer;
+}
+.pestana[aria-selected="true"] { color: var(--tinta); border-bottom-color: var(--margen); }
+.pestana:hover { color: var(--tinta); }
+
+.formulario { display: grid; gap: 1.1rem; }
+.campo { display: grid; gap: .35rem; }
+.campo label { font-weight: 700; }
+.campo .ayuda { font-size: .9375rem; color: var(--tinta-2); }
+.entrada-texto {
+  width: 100%; min-height: 48px; padding: .6rem .85rem;
+  border: 2px solid #9fb6d6; border-radius: 10px; background: #fff;
+  font-size: 1.0625rem;
+}
+.entrada-texto:hover { border-color: var(--tinta-2); }
+.entrada-texto:focus-visible { outline-offset: 1px; border-color: var(--foco); }
+.entrada-texto[aria-invalid="true"] { border-color: var(--error); background: #fff7f6; }
+
+.con-boton { position: relative; }
+.con-boton .entrada-texto { padding-right: 6.5rem; }
+.ver-clave {
+  position: absolute; right: 4px; top: 4px; bottom: 4px;
+  min-width: 44px; padding: 0 .75rem; border: 0; border-radius: 7px;
+  background: #eef4fd; color: var(--tinta); font-weight: 700; font-size: .9375rem; cursor: pointer;
+}
+.ver-clave:hover { background: #dfeafb; }
+
+.error {
+  display: flex; gap: .4rem; align-items: flex-start;
+  color: var(--error); font-size: .9375rem; font-weight: 700;
+}
+.error:empty { display: none; }
+.error::before { content: "!"; flex: none; display: grid; place-items: center; width: 1.2rem; height: 1.2rem; margin-top: .1rem; border-radius: 50%; background: var(--error); color: #fff; font-size: .75rem; }
+
+.casilla { display: flex; align-items: center; gap: .6rem; min-height: 44px; cursor: pointer; }
+.casilla input { width: 1.35rem; height: 1.35rem; accent-color: var(--tinta); margin: 0; }
+
+.aviso {
+  padding: .75rem 1rem; border-radius: 10px; border-left: 4px solid var(--error);
+  background: #fff1f0; color: var(--error); font-weight: 700;
+}
+.aviso:empty { display: none; }
+.aviso:focus { outline: 3px solid var(--foco); outline-offset: 2px; }
+
+.separador { display: flex; align-items: center; gap: .75rem; color: var(--tinta-2); font-size: .9375rem; margin: .25rem 0; }
+.separador::before, .separador::after { content: ""; flex: 1; height: 1px; background: var(--renglon); }
+
+.pie-hoja { margin-top: 1.25rem; font-size: .875rem; color: var(--tinta-2); }
+
+/* =====================================================================
+   MESA DE JUEGOS (tras entrar)
+   ===================================================================== */
+.usuario { display: flex; align-items: center; gap: .75rem; }
+.usuario .nombre { font-weight: 700; }
+@media (max-width: 560px) { .usuario .nombre { display: none; } }
+
+.saludo h1 {
+  font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem); line-height: 1.15; letter-spacing: -.015em; max-width: 24ch;
+}
+.saludo p { margin-top: .5rem; color: var(--tinta-2); max-width: 56ch; }
+
+.juegos { display: grid; gap: 2rem; margin: 2.25rem 0 0; padding: 0; list-style: none; }
+
+.juego {
+  display: grid; gap: 0;
+  background: var(--hoja); border: 1.5px solid var(--renglon); border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 18px 32px -24px rgba(27, 39, 71, .45);
+}
+@media (min-width: 820px) { .juego { grid-template-columns: 340px minmax(0, 1fr); } }
+
+.juego .portada {
+  position: relative; min-height: 200px; display: grid; place-items: center; overflow: hidden;
+}
+.juego .detalle { padding: 1.5rem 1.25rem 1.75rem; display: grid; gap: .9rem; align-content: start; }
+@media (min-width: 480px) { .juego .detalle { padding: 1.75rem 2rem 2rem; } }
+.juego h2 { font-size: 1.625rem; line-height: 1.2; }
+.juego p { color: var(--tinta-2); max-width: 60ch; }
+.practica { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.practica li {
+  padding: .2rem .7rem; border-radius: 999px; background: #eef4fd; color: var(--tinta); font-size: .9375rem;
+}
+.juego .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; margin-top: .4rem; }
+
+/* Portada 1: selva de sílabas (Juguemos a leer, edición jurásica) */
+.portada--leer { background: #0f5a43; color: #fff; }
+.portada--leer::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(120px 80px at 15% 110%, #1b7a5a 60%, transparent 61%),
+    radial-gradient(160px 100px at 85% 115%, #13694e 60%, transparent 61%),
+    radial-gradient(90px 60px at 50% 120%, #22936b 60%, transparent 61%);
+}
+.portada--leer .tablilla {
+  position: relative; display: flex; gap: .35rem; font-size: 3.5rem; font-weight: 700; line-height: 1;
+}
+.portada--leer .tablilla span {
+  background: #fdf6e3; color: var(--tinta); padding: .35rem .5rem .45rem; border-radius: 10px;
+  box-shadow: 0 6px 0 #0a3e2e;
+}
+.portada--leer .tablilla span:nth-child(2) { transform: rotate(4deg) translateY(6px); }
+.portada--leer .tablilla span:nth-child(1) { transform: rotate(-3deg); }
+.portada--leer .tablilla b { font-weight: 700; color: var(--v-i); }
+.portada--leer .tablilla span:nth-child(2) b { color: var(--v-o); }
+
+/* Portada 2: pizarrón con columnas C D U (Maestro virtual de matemáticas) */
+.portada--mate { background: #24323a; color: #f2f5ef; }
+.pizarron {
+  position: relative; display: grid; grid-template-columns: repeat(3, 3.25rem); text-align: center;
+  font-size: 2.6rem; line-height: 1.25; font-weight: 700;
+}
+.pizarron .col { font-size: 1rem; color: #ffd37a; border-bottom: 2px solid rgba(242, 245, 239, .45); padding-bottom: .2rem; }
+.pizarron .suma { grid-column: 1 / -1; border-top: 3px solid #f2f5ef; margin-top: .2rem; display: grid; grid-template-columns: repeat(3, 3.25rem); }
+.pizarron .mas { position: absolute; left: -1.8rem; top: 3.4rem; font-size: 2.2rem; }
+
+/* Consejos antes de jugar */
+.consejos {
+  margin-top: 2.5rem; padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+  border-left: 4px solid var(--v-o); background: rgba(255, 255, 255, .7); border-radius: 0 8px 8px 0;
+  max-width: 70ch;
+}
+.consejos h2 { font-size: 1.25rem; margin-bottom: .5rem; }
+.consejos ul { margin: 0; padding-left: 1.2rem; display: grid; gap: .35rem; }
+
+/* =====================================================================
+   REPRODUCTOR (jugar.html)
+   ===================================================================== */
+.reproductor { display: flex; flex-direction: column; height: 100vh; height: 100dvh; background: var(--tinta); }
+.barra {
+  display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+  padding: .5rem .75rem; background: var(--papel); border-bottom: 2px solid var(--margen);
+}
+.barra h1 { font-size: 1.125rem; line-height: 1.2; flex: 1 1 12rem; min-width: 0; }
+.barra .acciones { display: flex; gap: .5rem; flex-wrap: wrap; }
+.marco { flex: 1; border: 0; width: 100%; background: #fff; display: block; }
+.sin-juego { padding: 2rem; color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

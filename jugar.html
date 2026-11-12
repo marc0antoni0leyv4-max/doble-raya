@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es-419">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f6f9fe">
+<title>Jugar · Doble raya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="recursos/estilos.css">
+<script src="recursos/cuenta.js"></script>
+<script>
+  // Sin sesión, de vuelta a la entrada
+  if (!Cuenta.sesion()) location.replace('index.html');
+</script>
+</head>
+<body class="reproductor">
+  <header class="barra">
+    <a class="boton boton--claro boton--chico" href="index.html">Volver a los juegos</a>
+    <h1 id="titulo-juego">Cargando juego</h1>
+    <div class="acciones">
+      <button type="button" class="boton boton--chico" id="pantalla-completa">Pantalla completa</button>
+    </div>
+  </header>
+  <main id="principal" style="flex:1;display:flex">
+    <iframe class="marco" id="marco" title="Juego"
+            allow="microphone; autoplay; fullscreen; clipboard-write"
+            allowfullscreen></iframe>
+  </main>
+
+<script>
+(function () {
+  var JUEGOS = {
+    leer: { titulo: 'Juguemos a leer: edición jurásica', archivo: 'juegos/juguemos-a-leer.html' },
+    mate: { titulo: 'Maestro virtual de matemáticas', archivo: 'juegos/maestro-virtual.html' }
+  };
+  var clave = new URLSearchParams(location.search).get('juego');
+  var juego = JUEGOS[clave];
+  var marco = document.getElementById('marco');
+  var titulo = document.getElementById('titulo-juego');
+
+  if (!juego) {
+    titulo.textContent = 'Ese juego no existe';
+    marco.replaceWith(Object.assign(document.createElement('p'), {
+      className: 'sin-juego',
+      textContent: 'Vuelve a la mesa de juegos y elige uno de la lista.'
+    }));
+    document.getElementById('pantalla-completa').hidden = true;
+    return;
+  }
+
+  titulo.textContent = juego.titulo;
+  marco.title = juego.titulo;
+  document.title = juego.titulo + ' · Doble raya';
+  marco.src = juego.archivo;
+  marco.addEventListener('load', function () { try { marco.contentWindow.focus(); } catch (e) {} });
+
+  var btn = document.getElementById('pantalla-completa');
+  if (!marco.requestFullscreen) btn.hidden = true;
+  btn.addEventListener('click', function () { marco.requestFullscreen(); });
+})();
+</script>
+</body>
+</html>

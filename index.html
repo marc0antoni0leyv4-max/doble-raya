@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es-419">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f6f9fe">
+<title>Doble raya · Juegos para aprender a leer</title>
+<meta name="description" content="Juegos para practicar vocales, sílabas y su pronunciación en español latino.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="recursos/estilos.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f6f9fe'/%3E%3Cpath d='M4 9h24M4 23h24' stroke='%23bcd4f2' stroke-width='2'/%3E%3Cpath d='M4 19h24' stroke='%23d93a3f' stroke-width='2'/%3E%3Ctext x='16' y='19' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='14' fill='%231b2747'%3Ema%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="saltar" href="#principal">Ir al contenido</a>
+
+<div class="pagina">
+  <header class="cabecera">
+    <a class="marca" href="./" aria-label="Doble raya, inicio">
+      <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true">
+        <rect x="1" y="1" width="34" height="34" rx="7" fill="#fff" stroke="#bcd4f2" stroke-width="2"/>
+        <path d="M5 11h26" stroke="#bcd4f2" stroke-width="2"/>
+        <path d="M5 17h26" stroke="#bcd4f2" stroke-width="2" stroke-dasharray="3 3"/>
+        <path d="M5 23h26" stroke="#d93a3f" stroke-width="2"/>
+        <text x="18" y="23" text-anchor="middle" font-family="Andika, sans-serif" font-weight="700" font-size="15" fill="#1b2747">ma</text>
+      </svg>
+      Doble raya
+    </a>
+    <div class="usuario" id="usuario" hidden>
+      <span class="nombre" id="usuario-nombre"></span>
+      <button type="button" class="boton boton--claro boton--chico" id="salir">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main id="principal" tabindex="-1">
+
+    <!-- ===================== ENTRADA ===================== -->
+    <div class="entrada" id="vista-entrada">
+
+      <section class="silabario" aria-labelledby="titulo-silabario">
+        <h1 id="titulo-silabario">Toca una sílaba y escucha cómo suena</h1>
+        <p class="bajada">Elige una consonante y júntala con las cinco vocales. Así empiezan los juegos de lectura que te esperan adentro.</p>
+
+        <ul class="consonantes" aria-label="Consonantes">
+          <li><button type="button" data-c="m" aria-pressed="true">m</button></li>
+          <li><button type="button" data-c="p" aria-pressed="false">p</button></li>
+          <li><button type="button" data-c="s" aria-pressed="false">s</button></li>
+          <li><button type="button" data-c="l" aria-pressed="false">l</button></li>
+          <li><button type="button" data-c="t" aria-pressed="false">t</button></li>
+          <li><button type="button" data-c="n" aria-pressed="false">n</button></li>
+          <li><button type="button" data-c="" aria-pressed="false" aria-label="Solo vocales">a</button></li>
+        </ul>
+
+        <ul class="renglon" id="renglon" aria-label="Sílabas"></ul>
+
+        <div class="acciones">
+          <button type="button" class="boton boton--claro" id="leer-todas">Escuchar las cinco</button>
+          <p class="nota" id="nota-voz">Usa el altavoz o audífonos.</p>
+        </div>
+        <p class="solo-lector" aria-live="polite" id="anuncio-silaba"></p>
+      </section>
+
+      <!-- ===================== COMPONENTE DE ACCESO ===================== -->
+      <section class="hoja" aria-labelledby="titulo-acceso">
+        <h2 id="titulo-acceso" class="solo-lector">Acceso para familias y docentes</h2>
+
+        <div class="pestanas" role="tablist" aria-label="Acceso">
+          <button type="button" class="pestana" role="tab" id="tab-entrar" aria-selected="true" aria-controls="panel-entrar">Entrar</button>
+          <button type="button" class="pestana" role="tab" id="tab-crear" aria-selected="false" aria-controls="panel-crear" tabindex="-1">Crear cuenta</button>
+        </div>
+
+        <!-- Entrar -->
+        <div role="tabpanel" id="panel-entrar" aria-labelledby="tab-entrar">
+          <form class="formulario" id="form-entrar" novalidate>
+            <div class="aviso" id="aviso-entrar" role="alert" tabindex="-1"></div>
+
+            <div class="campo">
+              <label for="entrar-correo">Correo</label>
+              <input class="entrada-texto" id="entrar-correo" name="correo" type="email" inputmode="email"
+                     autocomplete="username" autocapitalize="off" spellcheck="false" required
+                     aria-describedby="entrar-correo-error">
+              <p class="error" id="entrar-correo-error"></p>
+            </div>
+
+            <div class="campo">
+              <label for="entrar-clave">Contraseña</label>
+              <div class="con-boton">
+                <input class="entrada-texto" id="entrar-clave" name="clave" type="password"
+                       autocomplete="current-password" required
+                       aria-describedby="entrar-clave-error entrar-mayus">
+                <button type="button" class="ver-clave" data-para="entrar-clave" aria-pressed="false">Mostrar</button>
+              </div>
+              <p class="error" id="entrar-clave-error"></p>
+              <p class="ayuda" id="entrar-mayus" aria-live="polite"></p>
+            </div>
+
+            <label class="casilla">
+              <input type="checkbox" id="entrar-recordar" checked>
+              Mantener la sesión en este dispositivo
+            </label>
+
+            <button type="submit" class="boton boton--ancho">Entrar</button>
+
+            <p class="separador">o</p>
+            <button type="button" class="boton boton--claro boton--ancho" id="invitado">Jugar sin cuenta</button>
+          </form>
+        </div>
+
+        <!-- Crear cuenta -->
+        <div role="tabpanel" id="panel-crear" aria-labelledby="tab-crear" hidden>
+          <form class="formulario" id="form-crear" novalidate>
+            <div class="aviso" id="aviso-crear" role="alert" tabindex="-1"></div>
+
+            <div class="campo">
+              <label for="crear-nombre">Tu nombre</label>
+              <input class="entrada-texto" id="crear-nombre" name="nombre" type="text"
+                     autocomplete="given-name" required maxlength="40"
+                     aria-describedby="crear-nombre-ayuda crear-nombre-error">
+              <p class="ayuda" id="crear-nombre-ayuda">Así te saludaremos al entrar.</p>
+              <p class="error" id="crear-nombre-error"></p>
+            </div>
+
+            <div class="campo">
+              <label for="crear-correo">Correo</label>
+              <input class="entrada-texto" id="crear-correo" name="correo" type="email" inputmode="email"
+                     autocomplete="email" autocapitalize="off" spellcheck="false" required
+                     aria-describedby="crear-correo-error">
+              <p class="error" id="crear-correo-error"></p>
+            </div>
+
+            <div class="campo">
+              <label for="crear-clave">Contraseña</label>
+              <div class="con-boton">
+                <input class="entrada-texto" id="crear-clave" name="clave" type="password"
+                       autocomplete="new-password" required minlength="8"
+                       aria-describedby="crear-clave-ayuda crear-clave-error">
+                <button type="button" class="ver-clave" data-para="crear-clave" aria-pressed="false">Mostrar</button>
+              </div>
+              <p class="ayuda" id="crear-clave-ayuda">Mínimo 8 caracteres.</p>
+              <p class="error" id="crear-clave-error"></p>
+            </div>
+
+            <button type="submit" class="boton boton--ancho">Crear cuenta</button>
+          </form>
+        </div>
+
+        <p class="pie-hoja">Las cuentas se guardan solo en este navegador. Si cambias de equipo, crea la cuenta de nuevo.</p>
+      </section>
+    </div>
+
+    <!-- ===================== MESA DE JUEGOS ===================== -->
+    <div id="vista-juegos" hidden>
+      <section class="saludo" aria-labelledby="titulo-saludo">
+        <h1 id="titulo-saludo">¿A qué jugamos hoy?</h1>
+        <p>Cada juego habla en español latino. Sube el volumen y deja que la voz guíe a quien está aprendiendo.</p>
+      </section>
+
+      <ul class="juegos">
+        <li class="juego">
+          <div class="portada portada--leer" aria-hidden="true">
+            <div class="tablilla"><span>d<b>i</b></span><span>n<b>o</b></span></div>
+          </div>
+          <div class="detalle">
+            <h2 id="juego-leer">Juguemos a leer: edición jurásica</h2>
+            <p>Lecciones letra por letra con Sauri el explorador: escucha las vocales y las sílabas, arma palabras en la pizarra mágica, traza letras con el dedo y lee frases en voz alta con dictado por micrófono.</p>
+            <ul class="practica" aria-label="Qué se practica">
+              <li>Vocales</li>
+              <li>Sílabas</li>
+              <li>Pronunciación</li>
+              <li>Trazo de letras</li>
+              <li>Lectura en voz alta</li>
+            </ul>
+            <div class="acciones">
+              <a class="boton" href="jugar.html?juego=leer" aria-describedby="juego-leer">Jugar</a>
+              <a href="juegos/juguemos-a-leer.html" target="_blank" rel="noopener">Abrir en otra pestaña<span class="solo-lector">: Juguemos a leer (se abre en una pestaña nueva)</span></a>
+            </div>
+          </div>
+        </li>
+
+        <li class="juego">
+          <div class="portada portada--mate" aria-hidden="true">
+            <div class="pizarron">
+              <span class="col">C</span><span class="col">D</span><span class="col">U</span>
+              <span>1</span><span>2</span><span>4</span>
+              <span class="mas">+</span>
+              <span>2</span><span>5</span><span>3</span>
+              <span class="suma"><span>3</span><span>7</span><span>7</span></span>
+            </div>
+          </div>
+          <div class="detalle">
+            <h2 id="juego-mate">Maestro virtual de matemáticas</h2>
+            <p>Un tutor que explica en voz alta, paso a paso, sumas y restas en columnas de centenas, decenas y unidades. Incluye el pizarrón de rayitas para contar y un panel para que el adulto prepare la tarea.</p>
+            <ul class="practica" aria-label="Qué se practica">
+              <li>Valor posicional</li>
+              <li>Sumas y restas</li>
+              <li>Conteo con rayitas</li>
+              <li>Escuchar instrucciones</li>
+            </ul>
+            <div class="acciones">
+              <a class="boton" href="jugar.html?juego=mate" aria-describedby="juego-mate">Jugar</a>
+              <a href="juegos/maestro-virtual.html" target="_blank" rel="noopener">Abrir en otra pestaña<span class="solo-lector">: Maestro virtual (se abre en una pestaña nueva)</span></a>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <aside class="consejos" aria-labelledby="titulo-consejos">
+        <h2 id="titulo-consejos">Antes de empezar</h2>
+        <ul>
+          <li>Usa Chrome o Edge: tienen las voces en español latino y el dictado por micrófono.</li>
+          <li>Cuando el juego pida el micrófono, toca «Permitir» para practicar la lectura en voz alta.</li>
+          <li>Si la voz suena en inglés o con acento de España, cambia el locutor en los ajustes de voz del juego.</li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<script src="recursos/cuenta.js"></script>
+<script src="recursos/voz.js"></script>
+<script src="recursos/inicio.js"></script>
+</body>
+</html>
